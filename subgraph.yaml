@@ -1,0 +1,215 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Users
+    network: mainnet
+    source:
+      address: "0x13344d0cb96b17df81c4171ce47e14ff6c1975f7"
+      abi: Users
+      startBlock: 12830000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AddedWallet
+        - RemovedWallet
+      abis:
+        - name: Users
+          file: ./abis/Users.json
+      eventHandlers:
+        - event: AddedWallet(indexed bytes32,address,string)
+          handler: handleAddedWallet
+        - event: RemovedWallet(indexed bytes32,address)
+          handler: handleRemovedWallet
+      file: ./src/Users.ts
+  - kind: ethereum/contract
+    name: CertifiedPartners
+    network: mainnet
+    source:
+      address: "0x8dbb99cc3721f5c9cc7c9e92db260813cf78cdd3"
+      abi: CertifiedPartners
+      startBlock: 12830039
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AddedCertifiedPartner
+        - AddedWallet
+        - AddedWhitelisted
+        - CPRestricted
+        - RemovedWallet
+        - RemovedWhitelisted
+      abis:
+        - name: CertifiedPartners
+          file: ./abis/CertifiedPartners.json
+      eventHandlers:
+        - event: AddedCertifiedPartner(indexed bytes32,string)
+          handler: handleAddedCertifiedPartner
+        - event: AddedWallet(indexed bytes32,address,string)
+          handler: handleAddedWallet
+        - event: AddedWhitelisted(indexed bytes32,string[],string)
+          handler: handleAddedWhitelisted
+        - event: RemovedWallet(indexed bytes32,address)
+          handler: handleRemovedWallet
+        - event: RemovedWhitelisted(indexed bytes32,string[],string)
+          handler: handleRemovedWhitelisted
+      file: ./src/CertifiedPartners.ts
+  - kind: ethereum/contract
+    name: PropertyFactory
+    network: mainnet
+    source:
+      address: "0x1ae91a263a690bf2129cf0b3acac92bbb67e6685"
+      abi: PropertyFactory
+      startBlock: 12831334
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NewPropToken
+      abis:
+        - name: PropertyFactory
+          file: ./abis/PropertyFactory.json
+      eventHandlers:
+        - event: NewPropToken(indexed address,indexed address,uint256)
+          handler: handleNewPropToken
+      file: ./src/PropertyFactory.ts
+  - kind: ethereum/contract
+    name: RevenueDistribution
+    network: mainnet
+    source:
+      address: "0xe1b9a8fE61Dc7da04a5d5d5a47057253E0F27906"
+      abi: RevenueDistribution
+      startBlock: 13229375
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - RentAdded
+        - RentClaimed
+        - RentSent
+      abis:
+        - name: RevenueDistribution
+          file: ./abis/RevenueDistribution.json
+      eventHandlers:
+        - event: RentAdded(indexed address,address[],uint256[],uint256,uint256)
+          handler: handleRentAdded
+        - event: RentClaimed(indexed address,indexed address,uint256,uint256)
+          handler: handleRentClaimed
+        - event: RentSent(indexed address,indexed address,uint256,uint256)
+          handler: handleRentSent
+      file: ./src/RevenueDistribution.ts
+  - kind: ethereum/contract
+    name: PropertyRegistry
+    network: mainnet
+    source:
+      address: "0x05325c1ab1440df7214db38f676f95999729267b"
+      abi: PropertyRegistry
+      startBlock: 12830307
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - IPFSHashChanged
+        - NameAndSymbolChange
+        - PropertyBasicInfoChanged
+        - PropertyInfoAdded
+        - PropertyInfoChanged
+        - PropertyValuationChange
+        - TokenValuationChange
+      abis:
+        - name: PropertyRegistry
+          file: ./abis/PropertyRegistry.json
+      eventHandlers:
+        - event: IPFSHashChanged(indexed address,string)
+          handler: handleIPFSHashChanged
+        - event: NameAndSymbolChange(indexed address,string,string)
+          handler: handleNameAndSymbolChange
+        - event: PropertyBasicInfoChanged(indexed address,string,string,string,uint256)
+          handler: handlePropertyBasicInfoChanged
+        - event: PropertyInfoAdded(indexed address,string,string,string,string,uint64)
+          handler: handlePropertyInfoAdded
+        - event: PropertyInfoChanged(indexed address,uint64,string,string,string,string,uint64)
+          handler: handlePropertyInfoChanged
+        - event: PropertyValuationChange(indexed address,uint256)
+          handler: handlePropertyValuationChange
+        - event: TokenValuationChange(indexed address,uint256)
+          handler: handleTokenValuationChange
+      file: ./src/PropertyRegistry.ts
+  - kind: ethereum/contract
+    name: InitialInvestment
+    network: mainnet
+    source:
+      address: "0x25862c4fB4ce9d6Ff9B463488e0EC656fA08dE78"
+      abi: InitialInvestment
+      startBlock: 13332868
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - InitialOffer
+        - Invested
+        - OwnershipTransferred
+        - InitialOfferingCanceled
+      abis:
+        - name: InitialInvestment
+          file: ./abis/InitialInvestment.json
+      eventHandlers:
+        - event: InitialOffer(indexed address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,address,uint256)
+          handler: handleInitialOffer
+        - event: Invested(indexed address,indexed address,address,uint256,uint256)
+          handler: handleInvested
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: InitialOfferingCanceled(indexed address)
+          handler: handleInitialOfferingCanceled
+      file: ./src/InitialInvestment.ts
+  - kind: ethereum/contract
+    name: DataStorageProxy
+    network: mainnet
+    source:
+      address: "0x8c2a858fe7b2bf155247c7f528c6ca7b186197b5"
+      abi: DataStorageProxy
+      startBlock: 13144270
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - TransferPropertyToCP
+      abis:
+        - name: DataStorageProxy
+          file: ./abis/DataStorageProxy.json
+      eventHandlers:
+        - event: TransferPropertyToCP(address,address)
+          handler: handleTransferPropertyToCP
+      file: ./src/DataStorageProxy.ts
+templates:
+  - kind: ethereum/contract
+    name: Property
+    network: mainnet
+    source:
+      abi: Property
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+        - CapitalStackChange
+      abis:
+        - name: Property
+          file: ./abis/Property.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: CapitalStackChange(indexed address,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleCapitalStackChange
+      file: ./src/Property.ts

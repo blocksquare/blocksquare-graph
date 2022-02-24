@@ -1,0 +1,114 @@
+type CertifiedPartner @entity {
+  id: ID!
+  name: String!
+  wallets: [Wallet!] @derivedFrom(field: "cp")
+  whitelisted: [UserCertifiedPartner!] @derivedFrom(field: "cp")
+  properties: [Property!] @derivedFrom(field: "cp")
+}
+
+type User @entity {
+  id: ID!
+  pendingRents: [Rent!] @derivedFrom(field: "user")
+  wallets: [Wallet!] @derivedFrom(field: "user")
+  cps: [UserCertifiedPartner!] @derivedFrom(field: "user")
+  properties: [PropertyUser!] @derivedFrom(field: "user")
+}
+
+type UserCertifiedPartner @entity {
+  id: ID!
+  user: User!
+  cp: CertifiedPartner!
+}
+
+type Wallet @entity {
+  id: ID!
+  cp: CertifiedPartner
+  user: User
+  investments: [PropertyInvestment!] @derivedFrom(field: "wallet")
+}
+
+type Property @entity {
+  id: ID!
+  token: Token!
+  tokenValuation: BigInt!
+  propertyValuation: BigInt!
+  propertyValuationCurrency: String!
+  streetLocation: String!
+  geoLocation: String!
+  parcelNumber: String!
+  kadastralMunicipality: String!
+  buildingPart: BigInt!
+  propertyType: String!
+  ipfs: String!
+  createdAt: BigInt!
+  createdAtBlock: BigInt!
+  capitalStacks: [PropertyCapitalStack!] @derivedFrom(field: "property")
+  investments: [PropertyInvestment!] @derivedFrom(field: "property")
+  holders: [PropertyUser!] @derivedFrom(field: "property")
+  pendingRents: [Rent!] @derivedFrom(field: "property")
+  offering: PropertyOffering
+  cp: CertifiedPartner!
+}
+
+type Token @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  totalSupply: BigInt!
+  totalTransfers: BigInt!
+  totalHolders: BigInt!
+}
+
+type PropertyCapitalStack @entity {
+  id: ID!
+  property: Property!
+  timestamp: BigInt!
+  cap: BigInt!
+  commonEquity: BigInt!
+  preferredEquity: BigInt!
+  mezzanine: BigInt!
+  juniorDebt: BigInt!
+  seniorDebt: BigInt!
+}
+
+type PropertyInvestment @entity {
+  id: ID!
+  property: Property!
+  wallet: Wallet!
+  investmentToken: String!
+  amountInvested: BigInt!
+  amountReceived: BigInt!
+}
+
+type PropertyOffering @entity {
+  id: ID!
+  property: Property!
+  price: BigInt!
+  softCap: BigInt!
+  presaleMaxInvestment: BigInt!
+  presaleMinInvestment: BigInt!
+  maxInvestment: BigInt!
+  minInvestment: BigInt!
+  presaleStart: BigInt!
+  presaleEnd: BigInt!
+  saleStart: BigInt!
+  saleEnd: BigInt!
+  investmentToken: String!
+  collector: String!
+  feeCollector: String!
+  fee: BigInt!
+}
+
+type PropertyUser @entity {
+  id: ID!
+  property: Property!
+  user: User!
+  amount: BigInt!
+}
+
+type Rent @entity {
+  id: ID!
+  property: Property!
+  user: User!
+  pendingRent: BigInt!
+}
